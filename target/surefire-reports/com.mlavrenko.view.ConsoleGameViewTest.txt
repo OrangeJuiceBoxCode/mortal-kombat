@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.mlavrenko.view.ConsoleGameViewTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.06 s - in com.mlavrenko.view.ConsoleGameViewTest
