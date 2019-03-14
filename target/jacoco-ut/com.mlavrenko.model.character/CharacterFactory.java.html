@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CharacterFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mortal-kombat</a> &gt; <a href="index.source.html" class="el_package">com.mlavrenko.model.character</a> &gt; <span class="el_source">CharacterFactory.java</span></div><h1>CharacterFactory.java</h1><pre class="source lang-java linenums">package com.mlavrenko.model.character;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
+
+/**
+ * Factory for Character objects creation.
+ */
+public class CharacterFactory {
+<span class="fc" id="L12">    private static final List&lt;Supplier&lt;Character&gt;&gt; characters = Arrays</span>
+<span class="fc" id="L13">            .asList(SubZero::new, Raiden::new, SonyaBlade::new, ShaoKahn::new);</span>
+
+<span class="nc" id="L15">    private CharacterFactory() {</span>
+        //noop
+<span class="nc" id="L17">    }</span>
+
+    /**
+     * Randomly create character.
+     *
+     * @return character
+     */
+    public static Character createRandom() {
+<span class="fc" id="L25">        int index = new Random().nextInt(characters.size());</span>
+<span class="fc" id="L26">        return characters.get(index).get();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

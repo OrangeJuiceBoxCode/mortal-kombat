@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleGameStarter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mortal-kombat</a> &gt; <a href="index.source.html" class="el_package">com.mlavrenko</a> &gt; <span class="el_source">SimpleGameStarter.java</span></div><h1>SimpleGameStarter.java</h1><pre class="source lang-java linenums">package com.mlavrenko;
+
+import com.mlavrenko.command.CommandMapper;
+import com.mlavrenko.controller.DefaultGameController;
+import com.mlavrenko.controller.GameController;
+import com.mlavrenko.helper.FileGameCaretaker;
+import com.mlavrenko.helper.GameCaretaker;
+import com.mlavrenko.model.game.Game;
+import com.mlavrenko.model.game.MortalKombatGame;
+import com.mlavrenko.utils.FileUtils;
+import com.mlavrenko.view.ConsoleGameView;
+import com.mlavrenko.view.GameView;
+import com.mlavrenko.view.TextConstants;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.Map;
+import java.util.function.Consumer;
+
+/**
+ * Encapsulates game start logic.
+ */
+class SimpleGameStarter {
+    private static final String PATH = &quot;game_memento.ser&quot;;
+
+<span class="nc" id="L31">    private SimpleGameStarter() {</span>
+        //noop
+<span class="nc" id="L33">    }</span>
+
+    static void start() throws IOException {
+<span class="nc" id="L36">        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));</span>
+<span class="nc" id="L37">        Map&lt;String, Consumer&lt;GameController&gt;&gt; userCommands = CommandMapper.getUserCommands();</span>
+
+<span class="nc" id="L39">        GameController gameController = initGameController();</span>
+<span class="nc" id="L40">        gameController.showIntro();</span>
+
+<span class="nc" id="L42">        String command = &quot;intro&quot;;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        while (!&quot;exit&quot;.equals(command)) {</span>
+<span class="nc" id="L44">            command = in.readLine();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if (userCommands.containsKey(command)) {</span>
+<span class="nc" id="L46">                userCommands.get(command).accept(gameController);</span>
+            } else {
+<span class="nc" id="L48">                System.err.println(MessageFormat.format(TextConstants.WRONG_COMMAND, command));</span>
+            }
+        }
+<span class="nc" id="L51">        cleanUpOnExit();</span>
+<span class="nc" id="L52">    }</span>
+
+    private static void cleanUpOnExit() throws IOException {
+<span class="nc" id="L55">        Path fileToDeletePath = Paths.get(PATH);</span>
+<span class="nc" id="L56">        Files.deleteIfExists(fileToDeletePath);</span>
+<span class="nc" id="L57">    }</span>
+
+    private static GameController initGameController() {
+<span class="nc" id="L60">        FileUtils fileUtils = new FileUtils(PATH);</span>
+<span class="nc" id="L61">        GameCaretaker fileGameCaretaker = new FileGameCaretaker(fileUtils);</span>
+<span class="nc" id="L62">        Game game = new MortalKombatGame();</span>
+<span class="nc" id="L63">        GameView consoleView = new ConsoleGameView(game);</span>
+<span class="nc" id="L64">        return new DefaultGameController(consoleView, game, fileGameCaretaker);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

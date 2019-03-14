@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultGameController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mortal-kombat</a> &gt; <a href="index.source.html" class="el_package">com.mlavrenko.controller</a> &gt; <span class="el_source">DefaultGameController.java</span></div><h1>DefaultGameController.java</h1><pre class="source lang-java linenums">package com.mlavrenko.controller;
+
+import com.mlavrenko.helper.GameCaretaker;
+import com.mlavrenko.model.character.Character;
+import com.mlavrenko.model.character.CharacterFactory;
+import com.mlavrenko.model.figth.FailedFightResult;
+import com.mlavrenko.model.figth.FightResult;
+import com.mlavrenko.model.game.Game;
+import com.mlavrenko.model.game.GameMemento;
+import com.mlavrenko.view.GameView;
+
+import java.util.Optional;
+
+/**
+ * Default implementation of GameController interface.
+ */
+public class DefaultGameController implements GameController {
+    private final GameView view;
+    private final Game game;
+    private final GameCaretaker fileGameCaretaker;
+
+<span class="fc" id="L22">    public DefaultGameController(GameView view, Game game, GameCaretaker fileGameCaretaker) {</span>
+<span class="fc" id="L23">        this.view = view;</span>
+<span class="fc" id="L24">        this.game = game;</span>
+<span class="fc" id="L25">        this.fileGameCaretaker = fileGameCaretaker;</span>
+<span class="fc" id="L26">    }</span>
+
+    @Override
+    public void showIntro() {
+<span class="fc" id="L30">        view.displayIntro();</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public void showOutro() {
+<span class="fc" id="L35">        view.displayOutro();</span>
+<span class="fc" id="L36">    }</span>
+
+    @Override
+    public void showExplore() {
+<span class="fc" id="L40">        view.displayExplore();</span>
+<span class="fc" id="L41">    }</span>
+
+
+    @Override
+    public void createCharacter() {
+<span class="fc" id="L46">        Character player = CharacterFactory.createRandom();</span>
+<span class="fc" id="L47">        game.setPlayer(player);</span>
+<span class="fc" id="L48">        view.displayCharacter();</span>
+<span class="fc" id="L49">    }</span>
+
+    @Override
+    public void fight() {
+<span class="fc" id="L53">        final FightResult fightResult = game.fight();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (fightResult == FailedFightResult.INSTANCE) {</span>
+<span class="fc" id="L55">            view.displayFightFailed();</span>
+        } else {
+<span class="fc" id="L57">            view.displayFight(fightResult);</span>
+        }
+<span class="fc" id="L59">    }</span>
+
+    @Override
+    public void save() {
+<span class="fc" id="L63">        GameMemento gameMemento = game.save();</span>
+<span class="fc" id="L64">        boolean saved = fileGameCaretaker.save(gameMemento);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (saved) {</span>
+<span class="fc" id="L66">            view.displaySave();</span>
+        } else {
+<span class="fc" id="L68">            view.displaySaveFailed();</span>
+        }
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public void resume() {
+<span class="fc" id="L74">        Optional&lt;GameMemento&gt; gameMemento = fileGameCaretaker.getMemento();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (gameMemento.isPresent()) {</span>
+<span class="fc" id="L76">            game.resume(gameMemento.get());</span>
+<span class="fc" id="L77">            view.displayResume();</span>
+        } else {
+<span class="fc" id="L79">            view.displayResumeFailed();</span>
+        }
+<span class="fc" id="L81">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConsoleGameView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mortal-kombat</a> &gt; <a href="index.source.html" class="el_package">com.mlavrenko.view</a> &gt; <span class="el_source">ConsoleGameView.java</span></div><h1>ConsoleGameView.java</h1><pre class="source lang-java linenums">package com.mlavrenko.view;
+
+import com.mlavrenko.model.character.Character;
+import com.mlavrenko.model.figth.FightResult;
+import com.mlavrenko.model.game.Game;
+
+import java.text.MessageFormat;
+
+import static com.mlavrenko.view.TextConstants.FAILED_FIGHT;
+import static com.mlavrenko.view.TextConstants.FAILED_RESUME;
+import static com.mlavrenko.view.TextConstants.FAILED_SAVE;
+import static com.mlavrenko.view.TextConstants.FIGHT_PATTERN;
+import static com.mlavrenko.view.TextConstants.RESUMED;
+import static com.mlavrenko.view.TextConstants.SAVED;
+
+/**
+ * Displays output to console.
+ */
+public class ConsoleGameView implements GameView {
+    private final Game game;
+
+<span class="fc" id="L22">    public ConsoleGameView(Game game) {</span>
+<span class="fc" id="L23">        this.game = game;</span>
+<span class="fc" id="L24">    }</span>
+
+    @Override
+    public void displayIntro() {
+<span class="fc" id="L28">        display(game.getIntro());</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public void displayOutro() {
+<span class="fc" id="L33">        display(game.getOutro());</span>
+<span class="fc" id="L34">    }</span>
+
+    @Override
+    public void displayExplore() {
+<span class="fc" id="L38">        display(game.getHelp());</span>
+<span class="fc" id="L39">    }</span>
+
+    @Override
+    public void displayCharacter() {
+<span class="fc" id="L43">        display(game.getPlayer().describe());</span>
+<span class="fc" id="L44">    }</span>
+
+    @Override
+    public void displaySave() {
+<span class="nc" id="L48">        display(SAVED);</span>
+<span class="nc" id="L49">    }</span>
+
+    @Override
+    public void displayResume() {
+<span class="nc" id="L53">        display(RESUMED);</span>
+<span class="nc" id="L54">    }</span>
+
+    @Override
+    public void displayResumeFailed() {
+<span class="nc" id="L58">        displayError(FAILED_RESUME);</span>
+<span class="nc" id="L59">    }</span>
+
+    @Override
+    public void displaySaveFailed() {
+<span class="nc" id="L63">        displayError(FAILED_SAVE);</span>
+<span class="nc" id="L64">    }</span>
+
+    @Override
+    public void displayFight(FightResult fightResult) {
+<span class="fc" id="L68">        Character player = fightResult.getFirstFighter();</span>
+<span class="fc" id="L69">        Character opponent = fightResult.getSecondFighter();</span>
+<span class="fc" id="L70">        Character winner = fightResult.getWinner();</span>
+<span class="fc" id="L71">        String resultMessage = MessageFormat.format(FIGHT_PATTERN, player.getName(), opponent.getName(),</span>
+<span class="fc" id="L72">                player.describe(), opponent.describe(), winner.getName());</span>
+<span class="fc" id="L73">        display(resultMessage);</span>
+<span class="fc" id="L74">    }</span>
+
+    @Override
+    public void displayFightFailed() {
+<span class="nc" id="L78">        displayError(FAILED_FIGHT);</span>
+<span class="nc" id="L79">    }</span>
+
+    private void displayError(String message) {
+<span class="nc" id="L82">        System.err.println(message);</span>
+<span class="nc" id="L83">    }</span>
+
+    private void display(String toDisplay) {
+<span class="fc" id="L86">        System.out.println(toDisplay);</span>
+<span class="fc" id="L87">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
